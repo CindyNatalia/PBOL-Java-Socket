@@ -1,0 +1,40 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package socket;
+import java.net.*;
+import java.io.*;
+/**
+ *
+ * @author Nice
+ */
+public class Client {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        try {
+            Socket s = new Socket("127.0.0.1",1306);
+            System.out.println("Komunikasi terhubung");
+            System.out.println("Client pada port = "+
+            s.getLocalAddress().getHostAddress() + " : "+ s.getLocalPort());
+            System.out.println("Server pada port = "+
+            s.getInetAddress().getHostAddress() + " : "+ s.getPort());
+            BufferedReader br = new BufferedReader( new InputStreamReader(s.getInputStream()));
+            System.out.println("Menunggu pesan...");
+            String greeting = "";
+        while ((greeting=br.readLine())!=null) { System.out.println(greeting); 
+            }
+            System.out.println("Selesai");
+            br.close();
+            s.close();
+        }
+        catch (Exception e) { 
+            e.printStackTrace();
+    }
+       }
+}
