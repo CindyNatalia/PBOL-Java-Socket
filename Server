@@ -15,27 +15,29 @@ public class Server {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        try {
-          ServerSocket ss = new ServerSocket(1306);
-          System.out.println("Menunggu Klien...");
-          Socket s = ss.accept();
-          System.out.println("Klien telah masuk");
-          System.out.println("Server pada port = "+
-          s.getLocalAddress().getHostAddress() + " : " + s.getLocalPort());
-          System.out.println("Client pada port = "+
-          s.getInetAddress().getHostAddress() + " : " + s.getPort());
-          PrintWriter pw = new PrintWriter(s.getOutputStream(), true);
-          BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-          String greeting = "";
-
-        while(!(greeting=br.readLine()).equals("")) { pw.println(greeting); 
-          }
-          pw.close(); s.close(); ss.close();
-          } 
-
-        catch (Exception e) { e.printStackTrace(); }
-          }
+        ServerSocket sk = new ServerSocket(1306);
+        Socket ss = sk.accept();
+        BufferedReader in = new BufferedReader(new InputStreamReader(ss.getInputStream()));
+        PrintStream out = new PrintStream(ss.getOutputStream());
+        BufferedReader cin = new BufferedReader(new InputStreamReader(System.in));
+        String inputan;
+        while (true) {            
+            inputan = in.readLine();
+            if (inputan.equalsIgnoreCase("selesai")){
+                out.println("BYE");
+                break;
+            }
+            System.out.print("Client : " +inputan+"\n");
+            System.out.print("Server : ");
+            inputan = cin.readLine();
+            out.println(inputan);  
+        }
+        sk.close();
+        ss.close();
+        in.close();
+        out.close();
+        cin.close();
     }
-   
+}
